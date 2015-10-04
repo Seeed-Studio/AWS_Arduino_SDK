@@ -1,0 +1,9 @@
+aws_iot_mqtt	KEYWORD1
+iot_mqtt_client	KEYWORD1
+setup	KEYWORD2
+connect	KEYWORD2
+publish	KEYWORD2
+subscribe	KEYWORD2
+unsubscirbe	KEYWORD2
+disconnect	KEYWORD2
+yield	KEYWORD2

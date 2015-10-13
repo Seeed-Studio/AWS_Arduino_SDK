@@ -1,7 +1,7 @@
 #!/usr/bin/expect -f
 set timeout -1
 # modify the following to your board ip
-spawn ssh root@[your_boards_IP]
+spawn ssh root@[your_boards_ip]
 #######################
 expect {
 -re ".*es.*o.*" {

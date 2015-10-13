@@ -2,8 +2,8 @@
 # connect via scp
 
 set timeout -1
-# modify the following line to contain your board's IP address
-spawn scp -r ./certs aws_iot_mqtt_client.py root@[your_boards_IP]:/root/
+# modify the following to your board ip
+spawn scp -r ./certs aws_iot_mqtt_client.py root@[your_boards_ip]:/root/
 #######################
 expect {
 -re ".*es.*o.*" {
@@ -11,7 +11,7 @@ exp_send "yes\r"
 exp_continue
 }
 -re ".*sword.*" {
-# modify the following to your own board's password (default: "seeeduino")
+# modify the following to your own board password
 exp_send "[your_password]\r"
 }
 }

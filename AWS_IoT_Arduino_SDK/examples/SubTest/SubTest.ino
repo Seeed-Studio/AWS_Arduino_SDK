@@ -89,17 +89,17 @@ void loop() {
   if(strcmp(msg, "on") == 0)
   {
     Serial.println("Turn on LED!");
-    digitalWrite(13, HIGH);   // turn the LED on (HIGH is the voltage level)
+    digitalWrite(3, HIGH);   // turn the LED on (HIGH is the voltage level). The SCL pin of I2C port is the D3 pin.
   }
   else if(strcmp(msg, "off") == 0)
   {
     Serial.println("Turn off LED!");
-    digitalWrite(13, LOW);    // turn the LED off by making the voltage LOW
+    digitalWrite(3, LOW);    // turn the LED off by making the voltage LOW. The SCL pin of I2C port is the D3 pin.
   }
   else
   {
     Serial.println("Error Message!");
-    digitalWrite(13, LOW);    // turn the LED off by making the voltage LOW
+    digitalWrite(3, LOW);    // turn the LED off by making the voltage LOW
   }
   
   delay(2000);

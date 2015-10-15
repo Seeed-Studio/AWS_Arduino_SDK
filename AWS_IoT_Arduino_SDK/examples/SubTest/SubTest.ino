@@ -1,6 +1,6 @@
 /*
  * SubTest.inc
- * A demo for Seeeduino Cloud with AWS IoT
+ * A demo for Grove on Seeeduino Cloud with AWS IoT
  *
  * Copyright (c) 2015 seeed technology inc.
  * Website    : www.seeed.cc
@@ -17,6 +17,7 @@
 aws_iot_mqtt_client myClient; // init iot_mqtt_client
 char msg[32]; // read-write buffer
 int rc = -100; // return value placeholder
+const int ledPin =  3;      // The SCL pin of I2C port is the D3 pin.
 
 // Basic callback function that prints out the message
 void msg_callback(char* src, int len) {
@@ -31,6 +32,9 @@ void msg_callback(char* src, int len) {
 }
 
 void setup() {
+
+  pinMode(ledPin, OUTPUT);       // The SCL pin of I2C port is the D3 pin.
+  
   // Start Serial for print-out and wait until it's ready
   Serial.begin(115200);
   while(!Serial);
@@ -46,6 +50,7 @@ void setup() {
   }
   Serial.print("AWS_IOT_CLIENT_ID: ");
   Serial.println(AWS_IOT_CLIENT_ID);
+  Serial.println(" ");
   
   // Load user configuration
   if((rc = myClient.config(AWS_IOT_MQTT_HOST, AWS_IOT_MQTT_PORT, AWS_IOT_ROOT_CA_PATH, AWS_IOT_PRIVATE_KEY_PATH, AWS_IOT_CERTIFICATE_PATH)) != 0) {
@@ -89,17 +94,17 @@ void loop() {
   if(strcmp(msg, "on") == 0)
   {
     Serial.println("Turn on LED!");
-    digitalWrite(3, HIGH);   // turn the LED on (HIGH is the voltage level). The SCL pin of I2C port is the D3 pin.
+    digitalWrite(ledPin, HIGH);   // turn the LED on (HIGH is the voltage level). The SCL pin of I2C port is the D3 pin.
   }
   else if(strcmp(msg, "off") == 0)
   {
     Serial.println("Turn off LED!");
-    digitalWrite(3, LOW);    // turn the LED off by making the voltage LOW. The SCL pin of I2C port is the D3 pin.
+    digitalWrite(ledPin, LOW);    // turn the LED off by making the voltage LOW. The SCL pin of I2C port is the D3 pin.
   }
   else
   {
     Serial.println("Error Message!");
-    digitalWrite(3, LOW);    // turn the LED off by making the voltage LOW
+    digitalWrite(ledPin, LOW);    // turn the LED off by making the voltage LOW
   }
   
   delay(2000);

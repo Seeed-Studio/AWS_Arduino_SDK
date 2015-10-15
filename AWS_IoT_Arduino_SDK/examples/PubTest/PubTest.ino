@@ -1,6 +1,6 @@
 /*
  * PubTest.inc
- * A demo for Seeeduino Cloud with AWS IoT
+ * A demo for Grove on Seeeduino Cloud with AWS IoT
  *
  * Copyright (c) 2015 seeed technology inc.
  * Website    : www.seeed.cc
@@ -13,12 +13,15 @@
 #include <string.h>
 #include "aws_iot_config.h"
 
-#define LED_STATE  "on"
-//#define LED_STATE  "off"
 
 aws_iot_mqtt_client myClient; // init iot_mqtt_client
 char msg[32]; // read-write buffer
+char led_state[4] = "off";
 int rc = -100; // return value placeholder
+const int buttonPin = 3;        // The SCL pin of I2C port is the D3 pin.
+
+// variables will change:
+int buttonState = 0;         // variable for reading the pushbutton status
 
 // Basic callback function that prints out the message
 void msg_callback(char* src, int len) {
@@ -33,6 +36,9 @@ void msg_callback(char* src, int len) {
 }
 
 void setup() {
+
+  pinMode(buttonPin, INPUT);        // The SCL pin of I2C port is the D3 pin.
+  
   // Start Serial for print-out and wait until it's ready
   Serial.begin(115200);
   while(!Serial);
@@ -48,6 +54,7 @@ void setup() {
   }
   Serial.print("AWS_IOT_CLIENT_ID: ");
   Serial.println(AWS_IOT_CLIENT_ID);
+  Serial.println(" ");
   
   // Load user configuration
   if((rc = myClient.config(AWS_IOT_MQTT_HOST, AWS_IOT_MQTT_PORT, AWS_IOT_ROOT_CA_PATH, AWS_IOT_PRIVATE_KEY_PATH, AWS_IOT_CERTIFICATE_PATH)) != 0) {
@@ -72,16 +79,31 @@ void setup() {
 }
 
 void loop() {
+  buttonState = digitalRead(buttonPin);
+
+  // check if the pushbutton is pressed.
+  // if it is, the buttonState is HIGH:
+  if (buttonState == HIGH) {
+    // Assigned message "on" to led_state.
+    memset(led_state, 0, sizeof(led_state));
+    strcpy(led_state, "on");
+  }
+  else {
+    // Assigned message "off" to led_state.
+    memset(led_state, 0, sizeof(led_state));
+    strcpy(led_state, "off");
+  }
+  
   // Generate a new message in each loop and publish to "topic/Arduino_LED"
 
-  if((rc = myClient.publish("topic/Arduino_LED", LED_STATE, strlen(LED_STATE), 1, false)) != 0) {
+  if((rc = myClient.publish("topic/Arduino_LED", led_state, strlen(led_state), 1, false)) != 0) {
     Serial.println("Publish failed!");
     Serial.println(rc);
   }
   else
   {
     Serial.print("Publish topic/Arduino_LED: ");
-    Serial.println(LED_STATE);
+    Serial.println(led_state);
   }
   // Get a chance to run a callback
   if((rc = myClient.yield()) != 0) {
